@@ -4,17 +4,20 @@ import {useState, useEffect, useRef, useCallback} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../app/page.module.css";
+import {formatNetWorth} from "@/lib/func";
 
 type Billionaire = {
     id: string;
     name: string;
-    netWorth: string;
-    country: string;
+    netWorth: number;
+    industries: string;
     squareImage: string;
 };
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 async function fetchBillionaires() {
-    const response = await fetch("https://billions-api.nomadcoders.workers.dev/");
+    const response = await fetch(`${API_URL}`);
     const data = await response.json();
     return data;
 }
@@ -78,7 +81,7 @@ export default function InfiniteScroll() {
                                 <Link href={`/person/${billionaire.id}`}>
                                     <Image src={billionaire?.squareImage} alt={billionaire.name} width={100} height={100} />
                                     <div className={styles.summary}>
-                                        {billionaire.name} <br />- ${billionaire.netWorth} - {billionaire.country}
+                                        {billionaire.name} <br /> {formatNetWorth(billionaire.netWorth)}/{billionaire.industries}
                                     </div>
                                 </Link>
                             </li>
@@ -93,7 +96,7 @@ export default function InfiniteScroll() {
                                         <Image src="/placeholder.png" alt="Placeholder Image" width={100} height={100} className={styles.img} />
                                     )}
                                     <div className={styles.summary}>
-                                        {billionaire.name} <br />- ${billionaire.netWorth} - {billionaire.country}
+                                        {billionaire.name} <br /> {formatNetWorth(billionaire.netWorth)}/{billionaire.industries}
                                     </div>
                                 </Link>
                             </li>

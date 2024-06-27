@@ -26,10 +26,10 @@ export async function generateMetadata({params}: {params: {id: string}}): Promis
     };
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 async function fetchBillionaire(id: string): Promise<Billionaire> {
-    const response = await fetch(`https://billions-api.nomadcoders.workers.dev/person/${id}`);
+    const response = await fetch(`${API_URL}/person/${id}`);
     const data = await response.json();
-    console.log(data, "-------");
     return data;
 }
 
